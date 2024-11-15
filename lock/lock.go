@@ -46,7 +46,7 @@ func NewLock(l *redislock.Lock) Lock {
 
 func (rl *locker) TryLock(ctx context.Context, key string, ttl time.Duration) (Lock, error) {
 	l, err := rl.lockCli.Obtain(ctx, key, ttl, &redislock.Options{
-		RetryStrategy: redislock.LimitRetry(redislock.LinearBackoff(time.Second), 3),
+		RetryStrategy: redislock.LimitRetry(redislock.LinearBackoff(500*time.Millisecond), 10),
 		Metadata:      "",
 	})
 	if err != nil {
